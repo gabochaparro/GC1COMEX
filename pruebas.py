@@ -76,7 +76,7 @@ if __name__ == "__main__":
     @app.route("/")
     def index():
         try:
-            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_1_minute)
+            df = tv.get_hist(symbol="BTCUSDT.P", exchange="BINANCE", interval=Interval.in_1_minute)
             csv = df.to_csv(index=True)
             json_data = df.to_json(orient="records")
             print(csv)
