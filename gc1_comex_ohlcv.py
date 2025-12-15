@@ -93,7 +93,7 @@ if __name__ == "__main__":
     @app.route("/ohlcv_4h")
     def ohlcv_4h():
         try:
-            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_4_hour)
+            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_4_hour, n_bars=99)
             csv = df.to_csv(index=True)
             #print(csv)
             return csv
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     @app.route("/ohlcv_d")
     def ohlcv_d():
         try:
-            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_daily)
+            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_daily, n_bars=99)
             csv = df.to_csv(index=True)
             #print(csv)
             return csv
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     @app.route("/ohlcv_w")
     def ohlcv_w():
         try:
-            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_weekly)
+            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_weekly, n_bars=99)
             csv = df.to_csv(index=True)
             #print(csv)
             return csv
