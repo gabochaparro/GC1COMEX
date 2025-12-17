@@ -1,7 +1,7 @@
 # Importar librerias
 #  -----------------------------------------------
 try:
-    import sys, logging, traceback, requests, datetime, flask
+    import sys, logging, traceback, flask, pandas_ta as ta
     from tvDatafeed import TvDatafeed, Interval
 except Exception as e:
     print(f"ERROR IMPORTANDO LIBRERIAS: {e}")
@@ -133,6 +133,66 @@ if __name__ == "__main__":
         except Exception as e:
             logger.error(f"ERROR EN ohlcv_w(): {e}")
             return flask.Response("ERROR INTERNO DEL SERVIDOR", status=500)
-    
-    app.run(host="0.0.0.0", port=80)
+        
+    @app.route("/emas954_w")
+    def emas954_w():
+        try:
+            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_weekly, n_bars=5000)
+            df_ema9 = ta.ema(df["close"], length=9)
+            df_ema54 = ta.ema(df["close"], length=54)
+            df["ema"] = df_ema9
+            df["ema54"] = df_ema54
+            csv = df.tail().to_csv(index=True)
+            #print(csv)
+            return csv
+        except Exception as e:
+            logger.error(f"ERROR EN emas954_w(): {e}")
+            return flask.Response("ERROR INTERNO DEL SERVIDOR", status=500)
+        
+    @app.route("/emas954_d")
+    def emas954_d():
+        try:
+            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_daily, n_bars=5000)
+            df_ema9 = ta.ema(df["close"], length=9)
+            df_ema54 = ta.ema(df["close"], length=54)
+            df["ema"] = df_ema9
+            df["ema54"] = df_ema54
+            csv = df.tail().to_csv(index=True)
+            #print(csv)
+            return csv
+        except Exception as e:
+            logger.error(f"ERROR EN emas954_d(): {e}")
+            return flask.Response("ERROR INTERNO DEL SERVIDOR", status=500)
+        
+    @app.route("/emas954_4h")
+    def emas954_4h():
+        try:
+            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_4_hour, n_bars=5000)
+            df_ema9 = ta.ema(df["close"], length=9)
+            df_ema54 = ta.ema(df["close"], length=54)
+            df["ema"] = df_ema9
+            df["ema54"] = df_ema54
+            csv = df.tail().to_csv(index=True)
+            #print(csv)
+            return csv
+        except Exception as e:
+            logger.error(f"ERROR EN emas954_4h(): {e}")
+            return flask.Response("ERROR INTERNO DEL SERVIDOR", status=500)
+
+    @app.route("/emas954_1h")
+    def emas954_1h():
+        try:
+            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_1_hour, n_bars=5000)
+            df_ema9 = ta.ema(df["close"], length=9)
+            df_ema54 = ta.ema(df["close"], length=54)
+            df["ema"] = df_ema9
+            df["ema54"] = df_ema54
+            csv = df.tail().to_csv(index=True)
+            #print(csv)
+            return csv
+        except Exception as e:
+            logger.error(f"ERROR EN emas954_w(): {e}")
+            return flask.Response("ERROR INTERNO DEL SERVIDOR", status=500)
+
+    app.run(host="0.0.0.0", port=80, debug=True)
     # -------------------------------------------------
