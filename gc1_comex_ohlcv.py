@@ -90,6 +90,17 @@ if __name__ == "__main__":
             logger.error(f"ERROR EN ohlcv_1m(): {e}")
             return flask.Response("ERROR INTERNO DEL SERVIDOR", status=500)
         
+    @app.route("/ohlcv_1h")
+    def ohlcv_1h():
+        try:
+            df = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=Interval.in_1_hour, n_bars=99)
+            csv = df.to_csv(index=True)
+            #print(csv)
+            return csv
+        except Exception as e:
+            logger.error(f"ERROR EN ohlcv_1h(): {e}")
+            return flask.Response("ERROR INTERNO DEL SERVIDOR", status=500)
+        
     @app.route("/ohlcv_4h")
     def ohlcv_4h():
         try:
