@@ -194,5 +194,5 @@ if __name__ == "__main__":
             logger.error(f"ERROR EN emas954_w(): {e}")
             return flask.Response("ERROR INTERNO DEL SERVIDOR", status=500)
 
-    app.run(host="0.0.0.0", port=8000, debug=False)
+    app.run(host="0.0.0.0", port=80, debug=True)
     # -------------------------------------------------
