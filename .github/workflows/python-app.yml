@@ -1,9 +1,8 @@
 name: Ejecución cada minuto
 
 on:
-  schedule:
-    # Esta es la expresión cron para "cada minuto"
-    - cron: '* * * * *'
+repository_dispatch:
+    types: [disparador]
   workflow_dispatch: # Permite ejecutarlo manualmente para probar
 
 jobs:
