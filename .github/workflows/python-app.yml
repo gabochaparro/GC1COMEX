@@ -1,8 +1,8 @@
 name: Ejecución cada minuto
 
 on:
-repository_dispatch:
-    types: [trigger-disparador]
+  repository_dispatch:
+    types: [disparador]
   workflow_dispatch: # Permite ejecutarlo manualmente para probar
 
 jobs:
