@@ -117,7 +117,7 @@ async def main():
             if ciclo >= ciclo_final:
                 print(f"Ciclo final {ciclo} alcanzado. Fin del programa.")
                 url_disparar_github_actions= "https://script.google.com/macros/s/AKfycbx4tSmQ5UrUOa-mwRonzfHWms8jjEBjy0RTFoesA-wZshTztxjKMjs348DhQYOvTKCHGw/exec"
-                r = requests.get(url_disparar_github_actions, params={"disparar": True})
+                r = requests.get(url_disparar_github_actions, params={"disparar": "GC1!"})
                 if r.status_code == 200:
                     print(r.text)
                 else:
