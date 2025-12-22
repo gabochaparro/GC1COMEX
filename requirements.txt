@@ -1,4 +1,4 @@
 tradingview-datafeed
 flask
 pandas_ta
-hypercorn
+uvicorn
