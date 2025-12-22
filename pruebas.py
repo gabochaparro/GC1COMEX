@@ -1,11 +1,10 @@
 # Importar librerias
 #  -----------------------------------------------
 try:
-    import talib, sys, logging, traceback, requests, datetime, asyncio, time
+    import pandas_ta as talib, sys, logging, traceback, requests, datetime, asyncio, time
     from tvDatafeed import TvDatafeed, Interval
 except Exception as e:
     print(f"ERROR IMPORTANDO LIBRERIAS: {e}")
-    input("ENTER PARA SALIR")
     sys.exit()
 #  -----------------------------------------------
 
@@ -55,10 +54,10 @@ async def emas954(tv:TvDatafeed=TvDatafeed(), intervalo:Interval=Interval.in_1_m
         ohlc_df_1m = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=intervalo, n_bars=5000)
         #print(ohlc_df_1m)
 
-        ema9 = talib.EMA(ohlc_df_1m["close"], timeperiod=9).iloc[-1]
-        ema9_anterior = talib.EMA(ohlc_df_1m["close"], timeperiod=9).iloc[-2]
-        ema54 = talib.EMA(ohlc_df_1m["close"], timeperiod=54).iloc[-1]
-        ema54_anterior = talib.EMA(ohlc_df_1m["close"], timeperiod=54).iloc[-2]
+        ema9 = talib.ema(ohlc_df_1m["close"], timeperiod=9).iloc[-1]
+        ema9_anterior = talib.ema(ohlc_df_1m["close"], timeperiod=9).iloc[-2]
+        ema54 = talib.ema(ohlc_df_1m["close"], timeperiod=54).iloc[-1]
+        ema54_anterior = talib.ema(ohlc_df_1m["close"], timeperiod=54).iloc[-2]
         if ema9 > ema54 and ema9_anterior > ema54_anterior:
             return "BUY"
         if ema9 < ema54 and ema9_anterior < ema54_anterior:
@@ -156,7 +155,6 @@ if __name__ == "__main__":
         sys.excepthook = registrar_excepciones # Ejecutar registrar_excepciones() cada vez que ocurre un error no manejado 
     except:
         print(f"ERROR INICIAMDO LOGGER: {traceback.format_exc()}")
-        input("ENTER PARA SALIR")
         sys.exit()
     # -----------------------------------------------
     
