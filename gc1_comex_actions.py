@@ -69,7 +69,7 @@ async def main():
     emas954_d = ""
     emas954_w = ""
     ciclo = 0
-    ciclo_final = 3
+    ciclo_final = 63
     
     while True:
         try:
@@ -116,10 +116,10 @@ async def main():
             print(f"Ciclo {ciclo} completado.")
             if ciclo >= ciclo_final:
                 print(f"Ciclo final {ciclo} alcanzado. Fin del programa.")
-                url_disparar_github_actions= "https://script.google.com/macros/s/AKfycbx4tSmQ5UrUOa-mwRonzfHWms8jjEBjy0RTFoesA-wZshTztxjKMjs348DhQYOvTKCHGw/exec?disparar=true"
-                r = requests.get(url_disparar_github_actions)
+                url_disparar_github_actions= "https://script.google.com/macros/s/AKfycbx4tSmQ5UrUOa-mwRonzfHWms8jjEBjy0RTFoesA-wZshTztxjKMjs348DhQYOvTKCHGw/exec"
+                r = requests.get(url_disparar_github_actions, params={"disparar": True})
                 if r.status_code == 200:
-                    print("GitHub Actions disparado correctamente.")
+                    print(r.text)
                 else:
                     print(f"ERROR DISPARANDO GITHUB ACTIONS. STATUS CODE: {r.status_code}" )
                 break
