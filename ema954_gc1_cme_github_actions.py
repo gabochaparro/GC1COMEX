@@ -69,7 +69,7 @@ async def main():
     emas954_d = ""
     emas954_w = ""
     ciclo = 0
-    ciclo_final = 3
+    ciclo_final = 63
     
     while True:
         try:
