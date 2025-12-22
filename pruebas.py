@@ -120,6 +120,7 @@ async def main():
         emas954_1h_actual, emas954_4h_actual, emas954_d_actual, \
         emas954_w_actual = resultados
         print(datetime.datetime.now()-ti, f"- ({datetime.datetime.now()})")
+        print(emas954_1m_actual, emas954_5m_actual, emas954_15m_actual, emas954_1h_actual, emas954_4h_actual, emas954_d_actual, emas954_w_actual)
         
         # Enviar solo si hay cambios
         if (emas954_1m != emas954_1m_actual and emas954_1m_actual != "" or 
