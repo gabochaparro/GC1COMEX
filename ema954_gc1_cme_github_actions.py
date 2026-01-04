@@ -10,11 +10,11 @@ except Exception as e:
 
 # Función EMAs 954
 #  -----------------------------------------------
-async def emas954(tv:TvDatafeed=TvDatafeed(), intervalo:Interval=Interval.in_1_minute, vela:int=1) -> str:
+async def emas954(tv:TvDatafeed=TvDatafeed(), symbol:str="GC1!", exchange:str="COMEX", intervalo:Interval=Interval.in_1_minute, vela:int=1) -> str:
     try:
         print(f"Obteniendo historial en {intervalo}")
         await asyncio.sleep(0.099)
-        ohlc_df_1m = tv.get_hist(symbol="GC1!", exchange="COMEX", interval=intervalo, n_bars=5000)
+        ohlc_df_1m = tv.get_hist(symbol=symbol, exchange=exchange, interval=intervalo, n_bars=5000)
         #print(ohlc_df_1m)
 
         ema9 = talib.ema(ohlc_df_1m["close"], 9).iloc[-1]
@@ -33,9 +33,9 @@ async def emas954(tv:TvDatafeed=TvDatafeed(), intervalo:Interval=Interval.in_1_m
 
 # Función para enviar info a una GSheets
 #  -----------------------------------------------
-def enviar_datos(url, emas954_1m, emas954_5m, emas954_15m, emas954_1h, emas954_4h, emas954_d, emas954_w):
+def enviar_datos(symbol, url, emas954_1m, emas954_5m, emas954_15m, emas954_1h, emas954_4h, emas954_d, emas954_w):
     try:
-        params = {"activo": "GC1!", 
+        params = {"activo": symbol, 
                 "ema954_1m": emas954_1m, 
                 "ema954_5m": emas954_5m, 
                 "ema954_15m": emas954_15m, 
@@ -48,7 +48,7 @@ def enviar_datos(url, emas954_1m, emas954_5m, emas954_15m, emas954_1h, emas954_4
             print(r.text)
             #logger.info(f"EMA954_1m: {emas954_1m}, EMA954_5m: {emas954_5m}, EMA954_15m: {emas954_15m}, EMA954_1h: {emas954_1h}, EMA954_4h: {emas954_4h}, EMA954_D: {emas954_d}, EMA954_w: {emas954_w}")
         else:
-            print(f"ERROR ENVINDO DATOS DE GC1! AL GSHEETS. STATUS CODE: {r.status_code}" )
+            print(f"ERROR ENVIANDO DATOS DE {symbol} AL GSHEETS. STATUS CODE: {r.status_code}" )
     except Exception as e:
         print("ERROR EN enviar_datos()")
 #  -----------------------------------------------
@@ -61,6 +61,8 @@ async def main():
     tv = TvDatafeed()
 
     # Variables iniciales
+    symbol = "GC1!"
+    exchange = "COMEX"
     emas954_1m = ""
     emas954_5m = ""
     emas954_15m = ""
@@ -79,13 +81,13 @@ async def main():
                 continue
             
             ti = datetime.datetime.now()
-            resultados = await asyncio.gather(emas954(tv, Interval.in_1_minute, 1), 
-                                            emas954(tv, Interval.in_5_minute, 1), 
-                                            emas954(tv, Interval.in_15_minute, 1), 
-                                            emas954(tv, Interval.in_1_hour, 1), 
-                                            emas954(tv, Interval.in_4_hour, 1), 
-                                            emas954(tv, Interval.in_daily, 1), 
-                                            emas954(tv, Interval.in_weekly, 1))
+            resultados = await asyncio.gather(emas954(tv, symbol, exchange, Interval.in_1_minute, 1), 
+                                            emas954(tv, symbol, exchange, Interval.in_5_minute, 1), 
+                                            emas954(tv, symbol, exchange, Interval.in_15_minute, 1), 
+                                            emas954(tv, symbol, exchange, Interval.in_1_hour, 1), 
+                                            emas954(tv, symbol, exchange, Interval.in_4_hour, 1), 
+                                            emas954(tv, symbol, exchange, Interval.in_daily, 1), 
+                                            emas954(tv, symbol, exchange, Interval.in_weekly, 1))
 
             emas954_1m_actual, emas954_5m_actual, emas954_15m_actual, \
             emas954_1h_actual, emas954_4h_actual, emas954_d_actual, \
@@ -110,18 +112,18 @@ async def main():
                 emas954_w = emas954_w_actual if emas954_w_actual != "" else emas954_w
                 
                 url_enviar_datos="https://script.google.com/macros/s/AKfycbx4tSmQ5UrUOa-mwRonzfHWms8jjEBjy0RTFoesA-wZshTztxjKMjs348DhQYOvTKCHGw/exec"
-                enviar_datos(url_enviar_datos, emas954_1m, emas954_5m, emas954_15m, emas954_1h, emas954_4h, emas954_d, emas954_w)
+                enviar_datos(symbol, url_enviar_datos, emas954_1m, emas954_5m, emas954_15m, emas954_1h, emas954_4h, emas954_d, emas954_w)
             
             ciclo += 1
             print(f"Ciclo {ciclo} completado.")
             if ciclo >= ciclo_final:
                 print(f"Ciclo final {ciclo} alcanzado. Fin del programa.")
-                url_disparar_github_actions= "https://script.google.com/macros/s/AKfycbx4tSmQ5UrUOa-mwRonzfHWms8jjEBjy0RTFoesA-wZshTztxjKMjs348DhQYOvTKCHGw/exec"
-                r = requests.get(url_disparar_github_actions, params={"disparar": "GC1!"})
+                url_disparar_github_actions = "https://script.google.com/macros/s/AKfycbx4tSmQ5UrUOa-mwRonzfHWms8jjEBjy0RTFoesA-wZshTztxjKMjs348DhQYOvTKCHGw/exec"
+                r = requests.get(url_disparar_github_actions, params={"disparar": symbol})
                 if r.status_code == 200:
                     print(r.text)
                 else:
-                    print(f"ERROR DISPARANDO GITHUB ACTIONS. STATUS CODE: {r.status_code}" )
+                    print(f"ERROR DISPARANDO GITHUB ACTIONS DE {symbol}. STATUS CODE: {r.status_code}" )
                 break
 
         except Exception as e:
