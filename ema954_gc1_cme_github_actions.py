@@ -111,7 +111,7 @@ async def main():
                 emas954_d = emas954_d_actual if emas954_d_actual != "" else emas954_d
                 emas954_w = emas954_w_actual if emas954_w_actual != "" else emas954_w
                 
-                url_enviar_datos="https://script.google.com/macros/s/AKfycbyJyyN7WFPtao1u_y8jgwsaKVYf2j8TL4vtg-Xe3kAotmBsUAEyFFjt2K-NgHauYxJjHw/exec
+                url_enviar_datos="https://script.google.com/macros/s/AKfycbyJyyN7WFPtao1u_y8jgwsaKVYf2j8TL4vtg-Xe3kAotmBsUAEyFFjt2K-NgHauYxJjHw/exec"
                 enviar_datos(symbol, url_enviar_datos, emas954_1m, emas954_5m, emas954_15m, emas954_1h, emas954_4h, emas954_d, emas954_w)
             
             ciclo += 1
